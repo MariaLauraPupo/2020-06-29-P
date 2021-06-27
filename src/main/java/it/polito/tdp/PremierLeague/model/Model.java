@@ -3,6 +3,7 @@ package it.polito.tdp.PremierLeague.model;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +46,24 @@ public class Model {
 		System.out.println("vertici "+ grafo.vertexSet().size());
 		System.out.println("archi "+ grafo.edgeSet().size());
 
+	}
+	public String getConnessioneMax(int min){
+//		List<Match> result = new LinkedList<Match>();
+		String result = "";
+		double max = 0.0;
+		for(Match m : this.grafo.vertexSet()) {
+			for(DefaultWeightedEdge e : this.grafo.outgoingEdgesOf(m)) {
+				if(this.grafo.getEdgeWeight(e) > max) {
+					max = this.grafo.getEdgeWeight(e);
+	//				result.add(m);
+	//				result.add(grafo.getEdgeTarget(e));
+					result += this.grafo.getEdgeSource(e).toString() + "-" + this.grafo.getEdgeTarget(e).toString() + "\n";
+				}
+			}
+		}
+		
+		return result;
+//		System.out.println(result);
 	}
 	
 }
