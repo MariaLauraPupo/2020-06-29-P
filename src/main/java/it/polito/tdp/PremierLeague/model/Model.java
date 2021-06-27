@@ -24,12 +24,27 @@ public class Model {
 		dao.listAllMatches(idMap);
 	}
 	
-	public void creaGrafo(int mese) {
+	public void creaGrafo(int mese, int min) {
 		grafo = new SimpleWeightedGraph<Match, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		//vertici
 		Graphs.addAllVertices(grafo, dao.getMatchByMese(mese, idMap));
 		//archi
-		System.out.println(grafo.vertexSet().size());
+		for(Arco a : dao.getArchi(min, idMap)) {
+			if(grafo.containsVertex(a.getM1()) && grafo.containsVertex(a.getM2()) ) {
+				DefaultWeightedEdge e = this.grafo.getEdge(a.getM1(), a.getM2());
+				if(e == null) {
+					if(a.getPeso() < 0) {
+						Graphs.addEdgeWithVertices(grafo, a.getM1(), a.getM2(), ((double) -1)*a.getPeso());
+					}else if(a.getPeso() > 0) {
+						Graphs.addEdgeWithVertices(grafo, a.getM1(), a.getM2(), (a.getPeso()));
+
+					}
+				}
+			}
+		}
+		System.out.println("vertici "+ grafo.vertexSet().size());
+		System.out.println("archi "+ grafo.edgeSet().size());
+
 	}
 	
 }

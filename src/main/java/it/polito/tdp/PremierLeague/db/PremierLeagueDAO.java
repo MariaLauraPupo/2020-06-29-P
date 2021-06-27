@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.polito.tdp.PremierLeague.model.Action;
+import it.polito.tdp.PremierLeague.model.Arco;
 import it.polito.tdp.PremierLeague.model.Match;
 import it.polito.tdp.PremierLeague.model.Player;
 
@@ -107,6 +108,39 @@ public class PremierLeagueDAO {
 
 				Match match = map.get(res.getInt("id")) ;
 				result.add(match);
+
+			}
+			conn.close();
+			return result;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Arco> getArchi(int min, Map<Integer, Match> map){
+		String sql ="SELECT m1.MatchID AS id1, m2.MatchID AS id2, COUNT(*) AS peso "
+				+ "FROM matches m1, matches m2, actions a1, actions a2 "
+				+ "WHERE m1.MatchID > m2.MatchID AND m1.MatchID = a1.MatchID AND m2.MatchID = a2.MatchID AND a1.PlayerID = a2.PlayerID AND a1.TimePlayed = a2.TimePlayed AND a1.TimePlayed >= ? "
+				+ "GROUP BY m1.MatchID , m2.MatchID";
+		List<Arco> result = new LinkedList<Arco>();
+		
+		Connection conn = DBConnect.getConnection();
+
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, min);
+			ResultSet res = st.executeQuery();
+			while (res.next()) {
+
+				Match m1 = map.get(res.getInt("id1"));
+				Match m2 = map.get(res.getInt("id2"));
+				if(m1 != null && m2 != null) {
+					Arco arco = new Arco(m1,m2,res.getInt("peso"));
+					result.add(arco);
+				}
+
 
 			}
 			conn.close();
