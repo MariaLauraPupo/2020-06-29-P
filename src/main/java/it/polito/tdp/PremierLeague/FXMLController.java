@@ -39,7 +39,7 @@ public class FXMLController {
     private TextField txtMinuti; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbMese"
-    private ComboBox<?> cmbMese; // Value injected by FXMLLoader
+    private ComboBox<String> cmbMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbM1"
     private ComboBox<?> cmbM1; // Value injected by FXMLLoader
@@ -79,6 +79,18 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	cmbMese.getItems().add("01");
+    	cmbMese.getItems().add("02");
+    	cmbMese.getItems().add("03");
+    	cmbMese.getItems().add("04");
+    	cmbMese.getItems().add("05");
+    	cmbMese.getItems().add("06");
+    	cmbMese.getItems().add("07");
+    	cmbMese.getItems().add("08");
+    	cmbMese.getItems().add("09");
+    	cmbMese.getItems().add("10");
+    	cmbMese.getItems().add("11");
+    	cmbMese.getItems().add("12");
   
     }
     
